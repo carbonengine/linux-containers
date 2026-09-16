@@ -1,0 +1,38 @@
+# © 2026 Fenris Creations. All rights reserved.
+FROM ubuntu:26.04
+
+ENV DEBIAN_FRONTEND=NONINTERACTIVE
+
+RUN apt-get update && apt-get install --no-install-recommends -yq \
+    # required to download the microsoft debian packages \
+    ca-certificates \
+    curl \
+    # required by vcpkg to bootstrap the executable \
+    zip \
+    unzip \
+    tar \
+    # required by various vcpkg build tools \
+    pkg-config \
+    autoconf \
+    automake \
+    autoconf-archive \
+    # required by openssl \
+    linux-libc-dev \
+    # required for C++ build environment \
+    build-essential \
+    cmake \
+    git \
+    ninja-build \
+    # Clean up \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV CMAKE_GENERATOR=Ninja
+
+# ODBC driver
+RUN curl -sSL -O https://packages.microsoft.com/config/ubuntu/26.04/packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb \
+    && rm packages-microsoft-prod.deb
+RUN apt-get update && ACCEPT_EULA=Y apt-get install --no-install-recommends -yq msodbcsql18 mssql-tools18 unixodbc-dev && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc
