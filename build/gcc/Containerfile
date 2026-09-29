@@ -1,7 +1,7 @@
 # © 2026 Fenris Creations. All rights reserved.
 FROM ubuntu:26.04
 
-ENV DEBIAN_FRONTEND=NONINTERACTIVE
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install --no-install-recommends -yq \
     # required to download the microsoft debian packages \
@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install --no-install-recommends -yq \
     linux-libc-dev \
     # required for C++ build environment \
     build-essential \
+    gdb \
     cmake \
     git \
     ninja-build \
