@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install --no-install-recommends -yq \
     linux-libc-dev \
     # required for C++ build environment \
     build-essential \
+    gdb \
     cmake \
     git \
     ninja-build \
